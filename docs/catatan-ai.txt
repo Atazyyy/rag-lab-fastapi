@@ -1,0 +1,32 @@
+MCP (Model Context Protocol) adalah protokol terbuka yang dibuat Anthropic pada November 2024
+untuk menghubungkan aplikasi AI dengan sumber data dan tools eksternal.
+MCP sering disebut "USB port untuk AI" karena sekali sebuah tool dibuat sebagai MCP server,
+semua AI agent yang mendukung protokol ini bisa langsung memakainya.
+
+Rate limit adalah pembatasan jumlah request yang boleh dilakukan dalam jangka waktu tertentu.
+Saat limit terlampaui server membalas HTTP 429 dengan header Retry-After.
+Strategi retry yang baik disebut exponential backoff: tunggu satu detik, coba lagi,
+kalau gagal tunggu dua detik, lalu empat detik, dan seterusnya.
+
+RAG (Retrieval Augmented Generation) adalah pola arsitektur AI yang menggabungkan
+pencarian dokumen (retrieval) dengan generasi jawaban (generation).
+Alurnya: dokumen dipotong menjadi chunk kecil, tiap chunk diubah menjadi embedding,
+embedding disimpan di vector database, lalu saat user bertanya,
+sistem mencari chunk yang maknanya paling mirip dengan pertanyaan
+dan menyisipkannya ke prompt sebelum dikirim ke LLM.
+
+Embedding adalah representasi teks sebagai deretan angka (vektor) yang menangkap makna.
+Dua kalimat dengan makna serupa akan punya vektor yang jaraknya dekat,
+meskipun katanya berbeda. Model embedding multibahasa populer antara lain
+multilingual-e5 dan paraphrase-multilingual-MiniLM.
+
+Hallucination adalah kondisi ketika model AI menjawab dengan percaya diri namun faktanya salah.
+Cara menguranginya antara lain: memberi konteks dokumen riil lewat RAG (grounding),
+meminta model menjawab hanya dari sumber yang diberikan, dan memverifikasi jawaban.
+
+Token adalah satuan pemenggalan teks yang dipakai model bahasa, kira-kira 4 karakter
+atau tiga perempat kata. Input adalah token yang dibaca model, output adalah token yang ditulis model.
+Cache read adalah membaca ulang konteks yang sudah disimpan di cache dengan biaya sepuluh kali lebih murah.
+
+FastAPI adalah framework web Python modern untuk membangun API, mendukung async,
+validasi otomatis lewat type hint Pydantic, dan dokumentasi OpenAPI otomatis di path /docs.
